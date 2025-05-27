@@ -1,0 +1,334 @@
+@startuml Sistema_Transporte_Carga_Express
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam shadowing false
+
+' Definición de colores para diferentes tipos de clases
+skinparam class {
+    BackgroundColor<<abstract>> LightYellow
+    BorderColor<<abstract>> Orange
+    BackgroundColor<<concrete>> LightBlue
+    BorderColor<<concrete>> Blue
+    BackgroundColor<<controller>> LightGreen
+    BorderColor<<controller>> Green
+}
+
+title Sistema de Transporte - Carga Express S.A.S\nDiagrama de Clases UML
+
+' ==================== CLASE EMPRESA ====================
+class Empresa <<concrete>> {
+    - nombre: String
+    - nit: String
+    - direccion: String
+    - telefono: String
+    - logo: String
+    --
+    + Empresa()
+    + Empresa(nombre: String, nit: String, direccion: String, telefono: String, logo: String)
+    + getNombre(): String
+    + setNombre(nombre: String): void
+    + getNit(): String
+    + setNit(nit: String): void
+    + getDireccion(): String
+    + setDireccion(direccion: String): void
+    + getTelefono(): String
+    + setTelefono(telefono: String): void
+    + getLogo(): String
+    + setLogo(logo: String): void
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE ABSTRACTA PERSONA ====================
+abstract class Persona <<abstract>> {
+    # cedula: String
+    # nombre: String
+    # apellido: String
+    # telefono: String
+    # email: String
+    # fechaNacimiento: LocalDate
+    --
+    + Persona()
+    + Persona(cedula: String, nombre: String, apellido: String, telefono: String, email: String, fechaNacimiento: LocalDate)
+    + getCedula(): String
+    + setCedula(cedula: String): void
+    + getNombre(): String
+    + setNombre(nombre: String): void
+    + getApellido(): String
+    + setApellido(apellido: String): void
+    + getTelefono(): String
+    + setTelefono(telefono: String): void
+    + getEmail(): String
+    + setEmail(email: String): void
+    + getFechaNacimiento(): LocalDate
+    + setFechaNacimiento(fechaNacimiento: LocalDate): void
+    + getNombreCompleto(): String
+    + calcularEdad(): int
+    + validarEmail(): boolean
+    + {abstract} mostrarInformacion(): String
+}
+
+' ==================== CLASE CLIENTE ====================
+class Cliente <<concrete>> {
+    - tipoCliente: String
+    - fechaRegistro: LocalDate
+    - viajesRealizados: int
+    - descuentoFrecuente: double
+    --
+    + Cliente()
+    + Cliente(cedula: String, nombre: String, apellido: String, telefono: String, email: String, fechaNacimiento: LocalDate, tipoCliente: String)
+    + getTipoCliente(): String
+    + setTipoCliente(tipoCliente: String): void
+    + getFechaRegistro(): LocalDate
+    + setFechaRegistro(fechaRegistro: LocalDate): void
+    + getViajesRealizados(): int
+    + setViajesRealizados(viajes: int): void
+    + getDescuentoFrecuente(): double
+    + setDescuentoFrecuente(descuento: double): void
+    + esClienteFrecuente(): boolean
+    + aplicarDescuento(): double
+    + incrementarViajes(): void
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE CONDUCTOR ====================
+class Conductor <<concrete>> {
+    - licencia: String
+    - tipoLicencia: String
+    - anosExperiencia: int
+    - foto: String
+    - salarioBase: double
+    - disponible: boolean
+    --
+    + Conductor()
+    + Conductor(cedula: String, nombre: String, apellido: String, telefono: String, email: String, fechaNacimiento: LocalDate, licencia: String, tipoLicencia: String, anosExperiencia: int)
+    + getLicencia(): String
+    + setLicencia(licencia: String): void
+    + getTipoLicencia(): String
+    + setTipoLicencia(tipoLicencia: String): void
+    + getAnosExperiencia(): int
+    + setAnosExperiencia(anos: int): void
+    + getFoto(): String
+    + setFoto(foto: String): void
+    + getSalarioBase(): double
+    + setSalarioBase(salario: double): void
+    + isDisponible(): boolean
+    + setDisponible(disponible: boolean): void
+    + validarLicencia(): boolean
+    + calcularBonificacion(): double
+    + estaDisponible(): boolean
+    + asignarViaje(): void
+    + liberarConductor(): void
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE ABSTRACTA VEHICULO ====================
+abstract class Vehiculo <<abstract>> {
+    # placa: String
+    # marca: String
+    # modelo: String
+    # ano: int
+    # capacidad: double
+    # disponible: boolean
+    # kilometraje: double
+    --
+    + Vehiculo()
+    + Vehiculo(placa: String, marca: String, modelo: String, ano: int, capacidad: double)
+    + getPlaca(): String
+    + setPlaca(placa: String): void
+    + getMarca(): String
+    + setMarca(marca: String): void
+    + getModelo(): String
+    + setModelo(modelo: String): void
+    + getAno(): int
+    + setAno(ano: int): void
+    + getCapacidad(): double
+    + setCapacidad(capacidad: double): void
+    + isDisponible(): boolean
+    + setDisponible(disponible: boolean): void
+    + getKilometraje(): double
+    + setKilometraje(kilometraje: double): void
+    + validarPlaca(): boolean
+    + estaDisponible(): boolean
+    + actualizarKilometraje(km: double): void
+    + {abstract} calcularTarifaBase(): double
+    + {abstract} mostrarInformacion(): String
+}
+
+' ==================== CLASE VEHICULO CARGA ====================
+class VehiculoCarga <<concrete>> {
+    - tipoCarga: String
+    - pesoMaximo: double
+    - tieneGrua: boolean
+    --
+    + VehiculoCarga()
+    + VehiculoCarga(placa: String, marca: String, modelo: String, ano: int, capacidad: double, tipoCarga: String, pesoMaximo: double, tieneGrua: boolean)
+    + getTipoCarga(): String
+    + setTipoCarga(tipoCarga: String): void
+    + getPesoMaximo(): double
+    + setPesoMaximo(pesoMaximo: double): void
+    + isTieneGrua(): boolean
+    + setTieneGrua(tieneGrua: boolean): void
+    + validarPeso(peso: double): boolean
+    + calcularTarifaBase(): double
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE VEHICULO PASAJEROS ====================
+class VehiculoPasajeros <<concrete>> {
+    - numeroPasajeros: int
+    - tieneAireAcondicionado: boolean
+    - nivelComodidad: String
+    --
+    + VehiculoPasajeros()
+    + VehiculoPasajeros(placa: String, marca: String, modelo: String, ano: int, capacidad: double, numeroPasajeros: int, tieneAireAcondicionado: boolean, nivelComodidad: String)
+    + getNumeroPasajeros(): int
+    + setNumeroPasajeros(numeroPasajeros: int): void
+    + isTieneAireAcondicionado(): boolean
+    + setTieneAireAcondicionado(tieneAire: boolean): void
+    + getNivelComodidad(): String
+    + setNivelComodidad(nivelComodidad: String): void
+    + calcularTarifaBase(): double
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE VIAJE ====================
+class Viaje <<concrete>> {
+    - id: String
+    - origen: String
+    - destino: String
+    - fechaViaje: LocalDateTime
+    - distancia: double
+    - duracionEstimada: int
+    - estado: String
+    - observaciones: String
+    - tarifaTotal: double
+    --
+    + Viaje()
+    + Viaje(id: String, origen: String, destino: String, fechaViaje: LocalDateTime, distancia: double)
+    + getId(): String
+    + setId(id: String): void
+    + getOrigen(): String
+    + setOrigen(origen: String): void
+    + getDestino(): String
+    + setDestino(destino: String): void
+    + getFechaViaje(): LocalDateTime
+    + setFechaViaje(fechaViaje: LocalDateTime): void
+    + getDistancia(): double
+    + setDistancia(distancia: double): void
+    + getDuracionEstimada(): int
+    + setDuracionEstimada(duracion: int): void
+    + getEstado(): String
+    + setEstado(estado: String): void
+    + getObservaciones(): String
+    + setObservaciones(observaciones: String): void
+    + getTarifaTotal(): double
+    + setTarifaTotal(tarifa: double): void
+    + calcularTarifa(): double
+    + iniciarViaje(): void
+    + finalizarViaje(): void
+    + agregarObservacion(observacion: String): void
+    + mostrarInformacion(): String
+}
+
+' ==================== CLASE ABSTRACTA TARIFA ====================
+abstract class Tarifa <<abstract>> {
+    # tarifaBase: double
+    # factorDistancia: double
+    --
+    + Tarifa()
+    + Tarifa(tarifaBase: double, factorDistancia: double)
+    + getTarifaBase(): double
+    + setTarifaBase(tarifaBase: double): void
+    + getFactorDistancia(): double
+    + setFactorDistancia(factorDistancia: double): void
+    + {abstract} calcular(distancia: double): double
+}
+
+' ==================== CLASE TARIFA ESTANDAR ====================
+class TarifaEstandar <<concrete>> {
+    - recargo: double
+    --
+    + TarifaEstandar()
+    + TarifaEstandar(tarifaBase: double, factorDistancia: double, recargo: double)
+    + getRecargo(): double
+    + setRecargo(recargo: double): void
+    + calcular(distancia: double): double
+}
+
+' ==================== CLASE TARIFA FRECUENTE ====================
+class TarifaFrecuente <<concrete>> {
+    - descuento: double
+    --
+    + TarifaFrecuente()
+    + TarifaFrecuente(tarifaBase: double, factorDistancia: double, descuento: double)
+    + getDescuento(): double
+    + setDescuento(descuento: double): void
+    + calcular(distancia: double): double
+}
+
+' ==================== CLASE SISTEMA TRANSPORTE ====================
+class SistemaTransporte <<controller>> {
+    - clientes: ArrayList<Cliente>
+    - conductores: ArrayList<Conductor>
+    - vehiculos: ArrayList<Vehiculo>
+    - viajes: ArrayList<Viaje>
+    - empresa: Empresa
+    --
+    + SistemaTransporte()
+    + SistemaTransporte(empresa: Empresa)
+    + getClientes(): ArrayList<Cliente>
+    + getConductores(): ArrayList<Conductor>
+    + getVehiculos(): ArrayList<Vehiculo>
+    + getViajes(): ArrayList<Viaje>
+    + getEmpresa(): Empresa
+    + setEmpresa(empresa: Empresa): void
+    + registrarCliente(cliente: Cliente): boolean
+    + registrarConductor(conductor: Conductor): boolean
+    + registrarVehiculo(vehiculo: Vehiculo): boolean
+    + programarViaje(viaje: Viaje): boolean
+    + buscarClientePorCedula(cedula: String): Cliente
+    + buscarConductorPorCedula(cedula: String): Conductor
+    + buscarVehiculoPorPlaca(placa: String): Vehiculo
+    + obtenerConductorDisponible(): Conductor
+    + obtenerVehiculoDisponible(tipo: String): Vehiculo
+    + obtenerDestinosFrecuentes(): ArrayList<String>
+    + obtenerViajesPorConductor(conductor: Conductor): ArrayList<Viaje>
+    + generarReporte(): String
+    + {static} main(args: String[]): void
+}
+
+' ==================== RELACIONES ====================
+
+' Relaciones de Herencia (Generalización)
+Persona <|-- Cliente : extends
+Persona <|-- Conductor : extends
+Vehiculo <|-- VehiculoCarga : extends
+Vehiculo <|-- VehiculoPasajeros : extends
+Tarifa <|-- TarifaEstandar : extends
+Tarifa <|-- TarifaFrecuente : extends
+
+' Relaciones de Composición (Parte-Todo fuerte)
+SistemaTransporte *-- Empresa : contains
+SistemaTransporte *-- "1..*" Cliente : manages
+SistemaTransporte *-- "1..*" Conductor : manages
+SistemaTransporte *-- "1..*" Vehiculo : manages
+SistemaTransporte *-- "0..*" Viaje : manages
+
+' Relaciones de Asociación
+Viaje --> Cliente : assigned to
+Viaje --> Conductor : driven by
+Viaje --> Vehiculo : uses
+Viaje --> Tarifa : calculated with
+
+' Multiplicidades y etiquetas adicionales
+Cliente ||--o{ Viaje : "cliente\n1..*"
+Conductor ||--o{ Viaje : "conductor\n1..*"
+Vehiculo ||--o{ Viaje : "vehiculo\n1..*"
+
+note top of Persona : Clase abstracta base\npara Cliente y Conductor
+note top of Vehiculo : Clase abstracta base\npara diferentes tipos de vehículos
+note top of Tarifa : Implementa patrón Strategy\npara cálculo de precios
+note right of SistemaTransporte : Controlador principal\ndel sistema (Patrón Facade)
+@enduml
